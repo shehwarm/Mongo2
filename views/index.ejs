@@ -20,9 +20,15 @@
         <h4>To :  <i><%= chat.to %></i> </h4>
         <div class="msg">
         <p><%= chat.message %></p>
+        <form method="GET" action="/chats/<%=chat._id%>/edit">
+            <button>Edit</button>
+        </form>
         </div>
         <hr>
+        <p><%=chat.created_at.toString().split(" ")[4]  %></p>
+        <p><%=chat.created_at.toString().split(" ").slice(0,4).join(" ") %></p>
     </div>
+
     <br><br>
 <% } %>
 

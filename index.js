@@ -35,15 +35,36 @@ app.post("/chats", async (req, res) => {
     let newChat = new Chat({ 
         from: from,
         to:to,
-        message: message ,
+        message: message,
         created_at: Date.now()
 });
-  newChat.save()
-  .then(res => console.log("chat saved"))
-  .catch(err => console.log(err));
   
+newChat.save()
+  .then(() => console.log("chat saved"))
+  .catch(err => console.log(err));
+
   res.redirect("/chats");
 });
+
+//Edit Route
+app.get("/chats/:id/edit", async (req, res) => {
+    let { id } = req.params;
+    let chat = await Chat.findById(id);
+    res.render("edit.ejs", { chat });
+});
+
+//Update Route
+app.put("/chats/:id", (req, res) => {
+    let { id } = req.params;
+    let { newMsg } = req.body;
+    let updatedChat = Chat.findByIdAndUpdate(
+        id,
+        { message: newMsg },
+        {runValidators: true, new: true }
+    );
+    res.redirect("/chats");
+});
+
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
